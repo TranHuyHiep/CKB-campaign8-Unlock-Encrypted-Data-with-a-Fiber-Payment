@@ -16,6 +16,35 @@ Selling a digital file (for example a research PDF, dataset or design asset) wit
 6. Buyer pays 1 CKB. Fiber returns the preimage after the seller claims the payment.
 7. The buyer's browser uses the preimage as the AES key, decrypts the file, checks its size, and offers it for **download**.
 
+## Walkthrough (screenshots)
+
+A full run on CKB Testnet, in the order you will see it.
+
+### 1. Both channels are `CHANNEL_READY`
+Buyer A and Seller C each hold a funded 500 CKB channel with Bottle (400 CKB spendable on the node's side, 150 CKB on Bottle's side).
+
+![Both channels CHANNEL_READY](docs/screenshots/01-channels-ready.png)
+
+### 2. Seller encrypts a file and creates the offer
+The seller picks `Speaking homework 1.docx` (15.3 KB), writes a free preview, and the browser produces the offer JSON: AES-256-GCM ciphertext, 1 CKB invoice, payment hash, file name and size, and the preview.
+
+![Seller creates the encrypted offer](docs/screenshots/02-seller-offer-created.png)
+
+### 3. Buyer sees the free preview, and the file stays locked
+After **Validate offer** the buyer reads the preview and file details ("locked until payment"). **Decrypt without key** is rejected, so the file cannot be opened before paying.
+
+![Buyer preview and Decryption rejected](docs/screenshots/03-buyer-preview-rejected.png)
+
+### 4. Payment completes and the key is revealed
+After **Pay 1 CKB** succeeds, the payment preimage (the AES key) is returned and **Unlock file with revealed key** becomes available.
+
+![Payment done, unlock enabled](docs/screenshots/04-payment-done-unlock-enabled.png)
+
+### 5. Receipt and unlocked file
+The receipt shows 1 CKB, the routing fee (0.001 CKB), the total (1.001 CKB) and the payment hash. The buyer then downloads the decrypted file.
+
+![Receipt and unlocked file](docs/screenshots/05-receipt-file-unlocked.png)
+
 ## What I changed from the starter
 
 | Area | Starter | This project |
